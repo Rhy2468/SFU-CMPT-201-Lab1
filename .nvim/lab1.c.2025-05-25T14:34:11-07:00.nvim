@@ -1,0 +1,32 @@
+#define _POSIX_C_SOURCE 200809L       
+#include <stdio.h>  //For printf and getline
+#include <string.h> //For strtok_r()
+#include <unistd.h> //For ssize_t
+
+// main code
+int main() {
+  // declare needed variables
+  char *input = NULL;
+  size_t inputSize = 0;
+  ssize_t numOfCharactersRead;
+
+  printf("Enter some text: ");
+  // Read input
+  numOfCharactersRead = getline(&input, &inputSize, stdin);
+  // Get rid of last newline character if exists
+  if (input[numOfCharactersRead - 1] == '\n') {
+    input[numOfCharactersRead - 1] = '\0';
+  };
+
+  // Print out results:
+  printf("Tokens:\n");
+  // Char used by strtok_r() to track position
+  char *current;
+  char *token = strtok_r(input, " ", &current);
+  while (token != NULL) {
+    printf("%s\n", token);
+    token = strtok_r(NULL, " ", &current);
+  };
+
+  return 0;
+};
