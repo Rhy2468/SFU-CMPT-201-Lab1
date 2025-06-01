@@ -1,0 +1,31 @@
+#include <stdio.h>
+#include <sys/wait.h>
+#include <unistd.h>
+
+int main() {
+  // store user input
+  char path[1000];
+
+  while (1) {
+    // get user input
+    fgets(path, sizeof(path), stdin);
+
+    // remove newline at end
+    char *p = path;
+    while (*p) {
+      if (*p == '\n') {
+        *p = '\0';
+        break;
+      }
+
+      p++;
+    }
+
+    if (fork() == 0) {
+      execl(path, path, NULL);
+      _exit(1);
+    } else {
+      wait(0);
+    }
+  }
+}
